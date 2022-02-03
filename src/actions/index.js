@@ -4,3 +4,7 @@ export const setUser = (user) => {
 export const unsetUser = () => {
   return { type: "user/unset" };
 };
+
+export const userLoaded = () => {
+  return { type: "user/loaded" };
+};
