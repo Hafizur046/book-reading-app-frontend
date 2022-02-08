@@ -22,7 +22,7 @@ export default function GithubCallback() {
       dispatch(setUser(resBody));
       setRedirect("/dashboard");
     }
-  }, []);
+  }, [dispatch]);
 
   if (redirect === "") return null;
   return <Navigate to={redirect} />;
