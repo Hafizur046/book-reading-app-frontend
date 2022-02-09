@@ -1,57 +1,27 @@
 import "./App.css";
-//import { Redirect } from "react-router";
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 
-import LandingPage from "./components/landingPage";
-import GithubCallback from "./components/githubCallback";
-import Dashboard from "./components/dashboard";
-//import { useDispatch } from "react-redux";
-//import { useEffect } from "react";
-//import { setUser, userLoaded } from "./actions";
-//import { createSpecefiedUser } from "./features/user/userSlice";
+//importing pages/routes
+import LandingPage from "./routes/landingPage";
+import GithubCallback from "./routes/githubCallback";
+import Dashboard from "./routes/dashboard";
+
+//importing services
 import { useGetSelfQuery } from "./services/user";
 
-function Loader() {
-  return <h1>Loading....</h1>;
-}
-
 function App() {
-  //const user = useSelector((state) => state.user);
-  //const dispatch = useDispatch();
-  //console.log("data:", data);
-
-  const { data, isLoading, error } = useGetSelfQuery();
-  if (error) {
-    console.log("Unauthorized 401:", error?.status === 401);
-    console.log(error);
-    //return null;
-  }
-  console.log(error, error?.status === 401);
-  if (error?.status === 401) {
-    console.log("the statement is true");
-  }
-
-  //const userLoading = useSelector((state) => !!state.user.value.username);
-
-  //useEffect(() => fetchUser(), []);
-
-  //async function fetchUser() {
-  //const response = await fetch("/api/auth/me");
-  //const responseBody = await response.json();
-  //dispatch(createSpecefiedUser(responseBody));
-  ////dispatch(setUser(responseBody));
-  ////dispatch(userLoaded());
-  //}
-
-  if (isLoading) return <Loader />;
-
+  const { error } = useGetSelfQuery();
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path="/"
           element={
-            data.username ? <Navigate to="/dashboard" /> : <LandingPage />
+            error?.status === 401 ? (
+              <LandingPage />
+            ) : (
+              <Navigate to="/dashboard" />
+            )
           }
         />
         <Route path="/dashboard" element={<Dashboard />} />
