@@ -10,7 +10,12 @@ import Dashboard from "./routes/dashboard";
 import { useGetSelfQuery } from "./services/user";
 
 function App() {
-  const { error } = useGetSelfQuery();
+  const { isLoading, error } = useGetSelfQuery();
+
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+
   return (
     <BrowserRouter>
       <Routes>
