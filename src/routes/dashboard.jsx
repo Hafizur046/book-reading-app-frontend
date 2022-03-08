@@ -2,7 +2,7 @@ import { useEffect } from "react";
 //import { useDispatch } from "react-redux";
 import { useGetSelfQuery } from "../services/user";
 import SocketContext from "../socket-middleware/socket-context";
-import TestDeeplyNestedComponent from "./test-deeply-nested-component";
+import RoomList from "./room-list";
 
 function Loader() {
   return <h1>Loading....</h1>;
@@ -19,7 +19,7 @@ export default function Dashboard() {
     <>
       <h1>Hello, {data?.username}</h1>
       <SocketContext.Consumer>
-        {(socket) => <TestDeeplyNestedComponent socket={socket} />}
+        {(socket) => <RoomList socket={socket} user={data} />}
       </SocketContext.Consumer>
     </>
   );
