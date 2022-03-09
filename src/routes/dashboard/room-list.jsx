@@ -12,13 +12,13 @@ function RoomList({ socket, user }) {
       setRooms(rooms);
     });
     socket.on("new-room", (room) => {
+      console.log("new room", room);
       setRooms((currentRooms) => [room, ...currentRooms]);
     });
   }, [socket]);
 
   function createRoom() {
     if (!socket) return;
-    console.log(user);
     socket.emit("create-room", {
       name: roomName,
       roomType: "public",
