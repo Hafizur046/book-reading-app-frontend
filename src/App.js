@@ -33,7 +33,7 @@ function App() {
     if (!isAuthenticated) return;
     const socket = io();
     setSocket(socket);
-  }, [isLoading]);
+  }, [isLoading, isAuthenticated]);
 
   if (isLoading) {
     return <h1>Loading...</h1>;
