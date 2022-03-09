@@ -6,6 +6,7 @@ import io from "socket.io-client";
 import LandingPage from "./routes/landingPage";
 import GithubCallback from "./routes/githubCallback";
 import Dashboard from "./routes/dashboard";
+import Room from "./routes/room";
 
 //importing contexts
 import SocketContext from "./socket-middleware/socket-context";
@@ -53,6 +54,12 @@ function App() {
           <Route
             path="/dashboard"
             element={<RedirectUnAthenticated Component={Dashboard} />}
+          />
+          <Route
+            path="/room/:roomId"
+            element={
+              <RedirectUnAthenticated Component={Room} socket={socket} />
+            }
           />
           <Route path="/api/github/callback" element={<GithubCallback />} />
         </Routes>
