@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 //import { useDispatch } from "react-redux";
-import { useGetSelfQuery } from "../services/user";
-import SocketContext from "../socket-middleware/socket-context";
+import { useGetSelfQuery } from "../../services/user";
+import SocketContext from "../../socket-middleware/socket-context";
 import RoomList from "./room-list";
 
 function Loader() {
