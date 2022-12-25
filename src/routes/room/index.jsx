@@ -1,23 +1,17 @@
-import { useEffect, useLayoutEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import ePub from "epubjs";
 
 //importing services
 import { useGetSelfQuery } from "../../services/user";
+import { ReactReader } from "react-reader";
 
 function Room({ socket }) {
   const { isLoading, data } = useGetSelfQuery();
   const params = useParams();
-
-  useLayoutEffect(() => {
-    const book = ePub("/capitalists_realism.epub");
-    const rendition = book.renderTo("area", {
-      flow: "paginated",
-      width: "100%",
-      height: "100%",
-    });
-    rendition.display();
-  }, []);
+  const [location, setLocation] = useState(null);
+  const locationChanged = (epubcifi) => {
+    setLocation(epubcifi);
+  };
 
   useEffect(() => {
     if (!socket || isLoading) return;
@@ -32,8 +26,13 @@ function Room({ socket }) {
 
   return (
     <div>
-      <h1>Room {params.roomId}</h1>
-      <div id="area"></div>
+      <div style={{ height: "100vh" }}>
+        <ReactReader
+          location={location}
+          locationChanged={locationChanged}
+          url="https://react-reader.metabits.no/files/alice.epub"
+        />
+      </div>
     </div>
   );
 }
