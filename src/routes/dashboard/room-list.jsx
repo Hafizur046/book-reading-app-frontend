@@ -19,11 +19,12 @@ function RoomList({ socket, user }) {
 
   function createRoom() {
     if (!socket) return;
+    const bookUrl = prompt("Enter the book url");
     socket.emit("create-room", {
       name: roomName,
       roomType: "public",
       user: user,
-      bookUrl: "https://somerandom.epub/file.epub",
+      bookUrl: bookUrl,
     });
     setRoomName("");
   }
