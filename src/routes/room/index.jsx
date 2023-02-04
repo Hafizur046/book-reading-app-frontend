@@ -30,7 +30,7 @@ function Room({ socket }) {
         <ReactReader
           location={location}
           locationChanged={locationChanged}
-          url="https://react-reader.metabits.no/files/alice.epub"
+          url="/capitalists_realism.epub"
         />
       </div>
     </div>
