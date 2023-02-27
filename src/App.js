@@ -1,6 +1,6 @@
-import "./App.css";
+import { useMemo } from "react";
 import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
-import io from "socket.io-client";
+import "./App.css";
 
 //importing pages/routes
 import LandingPage from "./routes/landingPage";
@@ -9,39 +9,37 @@ import Dashboard from "./routes/dashboard";
 import Room from "./routes/room";
 
 //importing contexts
-import SocketContext from "./socket-middleware/socket-context";
+import SocketContext, {
+  SocketProvider,
+} from "./socket-middleware/socket-context";
 
 //importing services
 import { useGetSelfQuery } from "./services/user";
-import { useEffect, useState } from "react";
 
 function RedirectUnAthenticated(props) {
   const { isLoading, error } = useGetSelfQuery();
+  const isAuthenticated = useMemo(() => error?.status !== 401, [error]);
   if (isLoading) return <div>Loading...</div>;
-  let isAuthenticated = error?.status !== 401;
   if (!isAuthenticated) {
     return <Navigate to="/" />;
   }
-  return <props.Component {...props} />;
+  return (
+    <SocketContext.Consumer>
+      {(socket) => <props.Component {...props} socket={socket} />}
+    </SocketContext.Consumer>
+  );
 }
 
 function App() {
   const { isLoading, error } = useGetSelfQuery();
-  let isAuthenticated = error?.status !== 401;
-  const [socket, setSocket] = useState(null);
-
-  useEffect(() => {
-    if (!isAuthenticated) return;
-    const socket = io();
-    setSocket(socket);
-  }, [isAuthenticated]);
+  const isAuthenticated = error?.status !== 401;
 
   if (isLoading) {
     return <h1>Loading...</h1>;
   }
 
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketProvider isAuthenticated={isAuthenticated}>
       <BrowserRouter>
         <Routes>
           <Route
@@ -57,14 +55,12 @@ function App() {
           />
           <Route
             path="/room/:roomId"
-            element={
-              <RedirectUnAthenticated Component={Room} socket={socket} />
-            }
+            element={<RedirectUnAthenticated Component={Room} />}
           />
           <Route path="/api/github/callback" element={<GithubCallback />} />
         </Routes>
       </BrowserRouter>
-    </SocketContext.Provider>
+    </SocketProvider>
   );
 }
 
