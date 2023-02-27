@@ -11,11 +11,15 @@ function Room({ socket }) {
   const [location, setLocation] = useState(null);
   const locationChanged = (epubcifi) => {
     setLocation(epubcifi);
+    socket.emit("location-changed", epubcifi);
   };
 
   useEffect(() => {
     if (!socket || isLoading) return;
     socket.emit("join-room", { roomId: params.roomId, user: data });
+    socket.on("location-changed", (epubcifi) => {
+      setLocation(epubcifi);
+    });
     socket.on("room-joined", (room) => {
       console.log(room);
     });

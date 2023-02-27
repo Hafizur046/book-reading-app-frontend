@@ -9,7 +9,7 @@ export default function GithubCallback() {
     let code = params.get("code");
     fetchData();
     async function fetchData() {
-      await fetch(`http://localhost:3000/api/auth/github?code=${code}`, {
+      await fetch(`/api/auth/github?code=${code}`, {
         method: "GET",
       });
       setRedirect("/dashboard");
